@@ -1,4 +1,4 @@
-package com.example.alarm;
+package com.h3flagup.puzzlealarm;
 
 import org.junit.Test;
 
