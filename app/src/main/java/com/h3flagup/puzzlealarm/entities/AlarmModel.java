@@ -1,6 +1,6 @@
 package com.h3flagup.puzzlealarm.entities;
 
-public class Alarm {
+public class AlarmModel {
     private int hour, minute;
     private boolean[] days = {false, true, true, true, false, false, true};
 
@@ -16,7 +16,7 @@ public class Alarm {
         return minute;
     }
 
-    public Alarm(int hour, int minute) {
+    public AlarmModel(int hour, int minute) {
         this.hour = hour;
         this.minute = minute;
     }

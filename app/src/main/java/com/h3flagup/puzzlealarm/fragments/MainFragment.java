@@ -14,7 +14,7 @@ import android.view.ViewGroup;
 
 import com.h3flagup.puzzlealarm.AlarmAdapter;
 import com.h3flagup.puzzlealarm.R;
-import com.h3flagup.puzzlealarm.entities.Alarm;
+import com.h3flagup.puzzlealarm.entities.AlarmModel;
 
 import java.util.Arrays;
 import java.util.List;
@@ -23,10 +23,10 @@ public class MainFragment extends Fragment {
     private RecyclerView recyclerView;
     private RecyclerView.Adapter mAdapter;
     private RecyclerView.LayoutManager layoutManager;
-    public static List<Alarm> myDataset = Arrays.asList(new Alarm(2, 4),
-            new Alarm(22, 43),
-            new Alarm(21, 41),
-            new Alarm(4, 55));
+    public static List<AlarmModel> myDataset = Arrays.asList(new AlarmModel(2, 4),
+            new AlarmModel(22, 43),
+            new AlarmModel(21, 41),
+            new AlarmModel(4, 55));
 
     public static MainFragment newInstance() {
         return new MainFragment();

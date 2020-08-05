@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.Switch;
 import android.widget.TextView;
@@ -14,9 +13,8 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.h3flagup.puzzlealarm.activities.SetAlarmActivity;
-import com.h3flagup.puzzlealarm.entities.Alarm;
+import com.h3flagup.puzzlealarm.entities.AlarmModel;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import static android.graphics.Color.rgb;
@@ -38,10 +36,10 @@ public class AlarmAdapter extends RecyclerView.Adapter<AlarmAdapter.ViewHolder> 
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, final int position) {
-        final Alarm alarm = alarms.get(position);
+        final AlarmModel alarmModel = alarmModels.get(position);
 
         TextView time = holder.alarmTime;
-        time.setText(alarm.getHour() + ":" + alarm.getMinute());
+        time.setText(alarmModel.getHour() + ":" + alarmModel.getMinute());
         holder.total.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -52,14 +50,14 @@ public class AlarmAdapter extends RecyclerView.Adapter<AlarmAdapter.ViewHolder> 
         });
         for (int i = 0; i < 7; ++i)
         {
-            if (alarm.getDays()[i])
+            if (alarmModel.getDays()[i])
                 holder.days[i].setTextColor(rgb(255, 0, 0));
         }
     }
 
     @Override
     public int getItemCount() {
-        return alarms.size();
+        return alarmModels.size();
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
@@ -83,9 +81,9 @@ public class AlarmAdapter extends RecyclerView.Adapter<AlarmAdapter.ViewHolder> 
             days[6] = (TextView) itemView.findViewById(R.id.fri);
         }
     }
-    private List<Alarm> alarms;
+    private List<AlarmModel> alarmModels;
 
-    public AlarmAdapter(List<Alarm> alarms) {
-        this.alarms = alarms;
+    public AlarmAdapter(List<AlarmModel> alarmModels) {
+        this.alarmModels = alarmModels;
     }
 }
