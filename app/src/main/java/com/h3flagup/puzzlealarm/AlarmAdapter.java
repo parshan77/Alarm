@@ -69,16 +69,6 @@ public class AlarmAdapter extends RecyclerView.Adapter<AlarmAdapter.ViewHolder> 
         public LinearLayout total;
         public ViewHolder(View itemView) {
             super(itemView);
-            total = (LinearLayout) itemView.findViewById(R.id.total_alarm);
-            alarmSwitch = (Switch) itemView.findViewById(R.id.alarmSwitch);
-            alarmTime = (TextView) itemView.findViewById(R.id.alarmTime);
-            days[0] = (TextView) itemView.findViewById(R.id.sat);
-            days[1] = (TextView) itemView.findViewById(R.id.sun);
-            days[2] = (TextView) itemView.findViewById(R.id.mon);
-            days[3] = (TextView) itemView.findViewById(R.id.tue);
-            days[4] = (TextView) itemView.findViewById(R.id.wed);
-            days[5] = (TextView) itemView.findViewById(R.id.thu);
-            days[6] = (TextView) itemView.findViewById(R.id.fri);
         }
     }
     private List<AlarmModel> alarmModels;
