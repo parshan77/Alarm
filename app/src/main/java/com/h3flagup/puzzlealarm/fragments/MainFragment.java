@@ -20,6 +20,7 @@ import java.util.Arrays;
 import java.util.List;
 
 public class MainFragment extends Fragment {
+
     private RecyclerView recyclerView;
     private RecyclerView.Adapter mAdapter;
     private RecyclerView.LayoutManager layoutManager;

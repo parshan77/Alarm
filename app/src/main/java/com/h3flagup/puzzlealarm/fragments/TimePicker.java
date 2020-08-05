@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.preference.Preference;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -20,10 +21,10 @@ import java.util.Calendar;
 public class TimePicker extends DialogFragment implements TimePickerDialog.OnTimeSetListener {
 
     private Handler handler;
-    Preference timeText;
-    public TimePicker(Looper looper, Preference pref) {
+    TextView timeText;
+    public TimePicker(Looper looper, TextView textView) {
         this.handler = new Handler(looper);
-        timeText = pref;
+        timeText = textView;
     }
 
     @NonNull
@@ -41,10 +42,13 @@ public class TimePicker extends DialogFragment implements TimePickerDialog.OnTim
         handler.post(new Runnable() {
             @Override
             public void run() {
-//                if (minute < 10)
-//                    timeText.setSummary(getString(R.string.alarmTimeTextFormatWithLeadingZero, hourOfDay , minute));
-//                else
-//                    timeText.setSummary(getString(R.string.alarmTimeTextFormat, hourOfDay , minute));
+                if (minute < 10) {
+                    timeText.setText(hourOfDay + ":0" + minute);
+//                    timeText.setSummary(getString(R.string.alarmTimeTextFormatWithLeadingZero, hourOfDay, minute));
+                } else {
+                    timeText.setText(hourOfDay + ":" + minute);
+//                    timeText.setSummary(getString(R.string.alarmTimeTextFormat, hourOfDay, minute));
+                }
             }
         });
     }
