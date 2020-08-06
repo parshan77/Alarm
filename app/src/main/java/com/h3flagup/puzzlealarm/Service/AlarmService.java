@@ -76,17 +76,18 @@ public class AlarmService extends Service {
         minute = intent.getIntExtra(minuteNameInIntent, MINUTE_DEFAULT_VALUE);
         alarmId = intent.getIntExtra(alarmIdNameInIntent, ALARMID_DEFAULT_VALUE);
         questionsNum = intent.getIntExtra(AlarmReceiver.questionsNumIntentName, AlarmReceiver.questionsNumDefault);
-        songUri = intent.getStringExtra(AlarmReceiver.uriNameInIntent);
         pendingIntentRequestCode = intent.getIntExtra(pendingIntentRequestCodeName, PENDING_INTENT_REQUEST_CODE_DEFAULT_VALUE);
         days = intent.getBooleanArrayExtra(daysNameInIntent);
+
+        songUri = intent.getStringExtra(AlarmReceiver.uriNameInIntent);
 
         switch (cmd) {
             case createAlarmCommand:
                 new Thread(new Runnable() {
                     @Override
                     public void run() {
-                        createNotificationChannel();
                         setupAlarm();
+                        createNotificationChannel();
                         showAlarmNotification();
                     }
                 }).start();

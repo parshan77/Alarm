@@ -11,7 +11,6 @@ public class AlarmReceiver extends BroadcastReceiver {
 
     private static String TAG = "AlarmReceiver";
 
-
     // constants:
     public static final String uriNameInIntent = "songUriString";
     public static final String questionsNumIntentName = "questionsNum";
@@ -21,13 +20,16 @@ public class AlarmReceiver extends BroadcastReceiver {
     public void onReceive(Context context, Intent intent) {
         Log.i(TAG, "onReceive called in broadcast receiver");
 
-        Intent alarmActivityIntent = new Intent(context, AlarmActivity.class);
-        alarmActivityIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-
-        String songUri = intent.getStringExtra(uriNameInIntent);
+        String songUri = intent.getStringExtra(this.uriNameInIntent);
         int questionsNum = intent.getIntExtra(questionsNumIntentName, questionsNumDefault);
 
+
+        Intent alarmActivityIntent = new Intent(context, AlarmActivity.class);
+
+        alarmActivityIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+
         alarmActivityIntent.putExtra(uriNameInIntent, songUri);
+
         alarmActivityIntent.putExtra(questionsNumIntentName, questionsNum);
         context.startActivity(alarmActivityIntent);
 
