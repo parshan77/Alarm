@@ -144,22 +144,17 @@ public class AlarmService extends Service {
         intent.putExtra(AlarmReceiver.questionsNumIntentName, questionsNum);
 
         PendingIntent pendingIntent = PendingIntent.getBroadcast(this, pendingIntentRequestCode, intent, 0);
-        for (int dayNum = 0; dayNum < 7; dayNum++) {
-            int day = (dayNum + 7) % 7;
-            if (days[dayNum]) {
-                Calendar calendar = Calendar.getInstance();
 
-                calendar.set(Calendar.HOUR_OF_DAY, hour);
-                calendar.set(Calendar.MINUTE, minute);
-                calendar.set(Calendar.SECOND, 0);
-                if (calendar.before(Calendar.getInstance()))
-                    calendar.add(Calendar.DATE, 1);
+        Calendar calendar = Calendar.getInstance();
 
-                calendar.setWeekDate(calendar.YEAR, calendar.WEEK_OF_YEAR, day);
+        calendar.set(Calendar.HOUR_OF_DAY, hour);
+        calendar.set(Calendar.MINUTE, minute);
+        calendar.set(Calendar.SECOND, 0);
+        if (calendar.before(Calendar.getInstance()))
+            calendar.add(Calendar.DATE, 1);
 
-                alarmManager.setExact(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pendingIntent);
-            }
-        }
+
+        alarmManager.setExact(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pendingIntent);
     }
 
 
