@@ -76,8 +76,8 @@ public class AlarmService extends Service {
                 hour = intent.getIntExtra(hourNameInIntent, HOUR_DEFAULT_VALUE);
                 minute = intent.getIntExtra(minuteNameInIntent, MINUTE_DEFAULT_VALUE);
                 alarmId = intent.getIntExtra(alarmIdNameInIntent, ALARMID_DEFAULT_VALUE);
-                questionsNum = intent.getIntExtra(AlarmReciever.questionsNumIntentName, AlarmReciever.questionsNumDefault);
-                songUri = intent.getStringExtra(AlarmReciever.uriNameInIntent);
+                questionsNum = intent.getIntExtra(AlarmReceiver.questionsNumIntentName, AlarmReceiver.questionsNumDefault);
+                songUri = intent.getStringExtra(AlarmReceiver.uriNameInIntent);
                 pendingIntentRequestCode = intent.getIntExtra(pendingIntentRequestCodeName, PENDING_INTENT_REQUEST_CODE_DEFAULT_VALUE);
 
                 new Thread(new Runnable() {
@@ -95,8 +95,8 @@ public class AlarmService extends Service {
                 hour = intent.getIntExtra(hourNameInIntent, HOUR_DEFAULT_VALUE);
                 minute = intent.getIntExtra(minuteNameInIntent, MINUTE_DEFAULT_VALUE);
                 pendingIntentRequestCode = intent.getIntExtra(pendingIntentRequestCodeName, PENDING_INTENT_REQUEST_CODE_DEFAULT_VALUE);
-                songUri = intent.getStringExtra(AlarmReciever.uriNameInIntent);
-                questionsNum = intent.getIntExtra(AlarmReciever.questionsNumIntentName, AlarmReciever.questionsNumDefault);
+                songUri = intent.getStringExtra(AlarmReceiver.uriNameInIntent);
+                questionsNum = intent.getIntExtra(AlarmReceiver.questionsNumIntentName, AlarmReceiver.questionsNumDefault);
 
 
                 editAlarm();
@@ -128,9 +128,9 @@ public class AlarmService extends Service {
     private void cancelAlarm() {
         AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
 
-        Intent intent = new Intent(this, AlarmReciever.class);
-        intent.putExtra(AlarmReciever.uriNameInIntent, songUri);
-        intent.putExtra(AlarmReciever.questionsNumIntentName, questionsNum);
+        Intent intent = new Intent(this, AlarmReceiver.class);
+        intent.putExtra(AlarmReceiver.uriNameInIntent, songUri);
+        intent.putExtra(AlarmReceiver.questionsNumIntentName, questionsNum);
 
         PendingIntent pendingIntent = PendingIntent.getBroadcast(this, pendingIntentRequestCode, intent, 0);
         alarmManager.cancel(pendingIntent);
@@ -148,9 +148,9 @@ public class AlarmService extends Service {
 
         AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
 
-        Intent intent = new Intent(this, AlarmReciever.class);
-        intent.putExtra(AlarmReciever.uriNameInIntent, songUri);
-        intent.putExtra(AlarmReciever.questionsNumIntentName, questionsNum);
+        Intent intent = new Intent(this, AlarmReceiver.class);
+        intent.putExtra(AlarmReceiver.uriNameInIntent, songUri);
+        intent.putExtra(AlarmReceiver.questionsNumIntentName, questionsNum);
 
         PendingIntent pendingIntent = PendingIntent.getBroadcast(this, pendingIntentRequestCode, intent, 0);
         alarmManager.setExact(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pendingIntent);

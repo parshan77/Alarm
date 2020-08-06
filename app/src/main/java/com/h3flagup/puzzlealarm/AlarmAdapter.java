@@ -12,6 +12,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.h3flagup.puzzlealarm.Service.AlarmService;
 import com.h3flagup.puzzlealarm.activities.SetAlarmActivity;
 import com.h3flagup.puzzlealarm.entities.AlarmModel;
 
@@ -44,7 +45,8 @@ public class AlarmAdapter extends RecyclerView.Adapter<AlarmAdapter.ViewHolder> 
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(view.getContext(), SetAlarmActivity.class);
-                intent.putExtra("AlarmIndex", position);
+                intent.putExtra(AlarmService.commandNameInIntent, AlarmService.editAlarmCommand);
+
                 view.getContext().startActivity(intent);
             }
         });

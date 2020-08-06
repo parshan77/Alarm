@@ -17,6 +17,7 @@ import android.widget.Button;
 
 import com.h3flagup.puzzlealarm.AlarmAdapter;
 import com.h3flagup.puzzlealarm.R;
+import com.h3flagup.puzzlealarm.Service.AlarmService;
 import com.h3flagup.puzzlealarm.activities.MainActivity;
 import com.h3flagup.puzzlealarm.activities.SetAlarmActivity;
 import com.h3flagup.puzzlealarm.entities.AlarmModel;
@@ -25,6 +26,7 @@ import com.h3flagup.puzzlealarm.helpers.DbHelper;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+
 
 public class MainFragment extends Fragment {
     private String TAG = "MainFragment";
@@ -65,6 +67,7 @@ public class MainFragment extends Fragment {
         recyclerView.setLayoutManager(layoutManager);
         mAdapter = new AlarmAdapter(myDataset);
         recyclerView.setAdapter(mAdapter);
+
         button = (Button) getView().findViewById(R.id.newAlarmButton);
         button = (Button) getView().findViewById(R.id.newAlarmButton);
         button.setOnClickListener(new View.OnClickListener() {
@@ -74,7 +77,15 @@ public class MainFragment extends Fragment {
                 Log.i(TAG, "onClick: opening second page activity");
 
                 Intent intent = new Intent(getView().getContext(), SetAlarmActivity.class);
-                intent.putExtra("SetAlarm", true);
+
+                Long tsLong = System.currentTimeMillis()/1000;
+                int alarmId = (int)(tsLong % 2000000000);
+                int pendingReqCode = alarmId;
+
+                intent.putExtra(AlarmService.alarmIdNameInIntent, alarmId);
+                intent.putExtra(SetAlarmActivity.isEditedNameInIntent, false);
+                intent.putExtra(AlarmService.pendingIntentRequestCodeName, pendingReqCode);
+
                 getView().getContext().startActivity(intent);
 
                 // TODO: 8/6/20 debug

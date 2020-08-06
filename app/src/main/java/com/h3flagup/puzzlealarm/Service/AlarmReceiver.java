@@ -7,7 +7,7 @@ import android.util.Log;
 
 import com.h3flagup.puzzlealarm.activities.AlarmActivity;
 
-public class AlarmReciever extends BroadcastReceiver {
+public class AlarmReceiver extends BroadcastReceiver {
 
     private static String TAG = "AlarmReceiver";
 

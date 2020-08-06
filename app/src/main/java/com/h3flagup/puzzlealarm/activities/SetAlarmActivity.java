@@ -16,7 +16,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.h3flagup.puzzlealarm.R;
-import com.h3flagup.puzzlealarm.Service.AlarmReciever;
+import com.h3flagup.puzzlealarm.Service.AlarmReceiver;
 import com.h3flagup.puzzlealarm.Service.AlarmService;
 import com.h3flagup.puzzlealarm.fragments.TimePicker;
 
@@ -63,8 +63,8 @@ public class SetAlarmActivity extends AppCompatActivity {
                 alarmIntent.putExtra(AlarmService.hourNameInIntent, hour);
                 alarmIntent.putExtra(AlarmService.minuteNameInIntent, minute);
                 alarmIntent.putExtra(AlarmService.alarmIdNameInIntent, alarmId);
-                alarmIntent.putExtra(AlarmReciever.questionsNumIntentName, questionsNum);
-                alarmIntent.putExtra(AlarmReciever.uriNameInIntent, soundUri);
+                alarmIntent.putExtra(AlarmReceiver.questionsNumIntentName, questionsNum);
+                alarmIntent.putExtra(AlarmReceiver.uriNameInIntent, soundUri);
 
                 if (!isEdited) {
                     Log.i(TAG, "setUpAlarm: getting information from alarmTimeTextView");
