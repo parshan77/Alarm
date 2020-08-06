@@ -62,13 +62,12 @@ public class MainFragment extends Fragment {
         recyclerView = (RecyclerView) getView().findViewById(R.id.alarm_recycler);
         recyclerView.setHasFixedSize(true);
         layoutManager = new LinearLayoutManager(getContext());
-        dbHelper = new DbHelper(getView().getContext());
-//        myDataset = dbHelper.getAllAlarms();
+        dbHelper = MainActivity.dbHelper;
+        myDataset = dbHelper.getAllAlarms();
         recyclerView.setLayoutManager(layoutManager);
         mAdapter = new AlarmAdapter(myDataset);
         recyclerView.setAdapter(mAdapter);
 
-        button = (Button) getView().findViewById(R.id.newAlarmButton);
         button = (Button) getView().findViewById(R.id.newAlarmButton);
         button.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -92,7 +91,6 @@ public class MainFragment extends Fragment {
             }
         });
 
-        dbHelper.addAlarm(myDataset.get(0));
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

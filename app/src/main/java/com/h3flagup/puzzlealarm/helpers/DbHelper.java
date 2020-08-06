@@ -6,6 +6,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.net.Uri;
+import android.os.strictmode.SqliteObjectLeakedViolation;
 
 import androidx.annotation.Nullable;
 import androidx.core.app.AppLaunchChecker;
@@ -34,7 +35,8 @@ public class DbHelper extends SQLiteOpenHelper {
 
     public DbHelper(@Nullable Context context) {
         super(context, DATABASE_NAME, null, 1);
-        getReadableDatabase(); // <-- add this, which triggers onCreate/onUpdate
+        SQLiteDatabase s = getWritableDatabase(); // <-- add this, which triggers onCreate/onUpdate
+        s = getReadableDatabase(); // <-- add this, which triggers onCreate/onUpdate
     }
 
     @Override
@@ -43,7 +45,7 @@ public class DbHelper extends SQLiteOpenHelper {
                 + ALARM_COLUMN_HOUR + " INT, " + ALARM_COLUMN_MINUTE + " INT, "
                 + ALARM_COLUMN_IS_ACTIVE + " INT, "+ ALARM_COLUMN_IS_SNOOZED + " INT, " + ALARM_COLUMN_SAT + " INT, "+ ALARM_COLUMN_SUN + " INT, "
                 + ALARM_COLUMN_MON + " INT, " + ALARM_COLUMN_TUE + " INT, " + ALARM_COLUMN_WED + " INT, " + ALARM_COLUMN_THU + " INT, "
-                + ALARM_COLUMN_FRI + " INT, " + ALARM_COLUMN_DEFAULT_URI + " TEXT)");
+                + ALARM_COLUMN_FRI + " INT, " + ALARM_COLUMN_DEFAULT_URI + " TEXT, " + ALARM_COLUMN_REQUEST_CODE + " INT)");
     }
 
     @Override
@@ -70,7 +72,7 @@ public class DbHelper extends SQLiteOpenHelper {
         cv.put(ALARM_COLUMN_DEFAULT_URI, alarm.getDefaultUri().toString());
         cv.put(ALARM_COLUMN_REQUEST_CODE, alarm.getRequestCode());
 
-        long id = db.insert(ALARM_TABLE_NAME, null, cv);
+        long id = db.insertOrThrow(ALARM_TABLE_NAME, null, cv);
         alarm.setAlarmId(id);
 
         return true;

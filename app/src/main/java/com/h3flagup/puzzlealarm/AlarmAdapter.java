@@ -27,11 +27,9 @@ public class AlarmAdapter extends RecyclerView.Adapter<AlarmAdapter.ViewHolder> 
         Context context = parent.getContext();
         LayoutInflater inflater = LayoutInflater.from(context);
 
-        // Inflate the custom layout
-        View contactView = inflater.inflate(R.layout.alarm_item, parent, false);
+        View alarmView = inflater.inflate(R.layout.alarm_item, parent, false);
 
-        // Return a new holder instance
-        ViewHolder viewHolder = new ViewHolder(contactView);
+        ViewHolder viewHolder = new ViewHolder(alarmView);
         return viewHolder;
     }
 
@@ -46,7 +44,6 @@ public class AlarmAdapter extends RecyclerView.Adapter<AlarmAdapter.ViewHolder> 
             public void onClick(View view) {
                 Intent intent = new Intent(view.getContext(), SetAlarmActivity.class);
                 intent.putExtra(AlarmService.commandNameInIntent, AlarmService.editAlarmCommand);
-
                 view.getContext().startActivity(intent);
             }
         });
@@ -63,8 +60,6 @@ public class AlarmAdapter extends RecyclerView.Adapter<AlarmAdapter.ViewHolder> 
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
-        // Your holder should contain a member variable
-        // for any view that will be set as you render a row
         public TextView alarmTime;
         public TextView[] days = new TextView[7];
         public Switch alarmSwitch;
