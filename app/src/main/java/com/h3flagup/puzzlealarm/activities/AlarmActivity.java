@@ -2,6 +2,8 @@ package com.h3flagup.puzzlealarm.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.media.MediaPlayer;
+import android.net.Uri;
 import android.content.Context;
 import android.os.Bundle;
 import android.os.Vibrator;
@@ -15,6 +17,8 @@ import com.h3flagup.puzzlealarm.R;
 import com.h3flagup.puzzlealarm.entities.Operation;
 import com.h3flagup.puzzlealarm.entities.Question;
 
+import static com.h3flagup.puzzlealarm.Service.AlarmReceiver.uriNameInIntent;
+
 public class AlarmActivity extends AppCompatActivity {
 
     private Question question;
@@ -22,6 +26,7 @@ public class AlarmActivity extends AppCompatActivity {
     private TextView op1;
     private TextView op2;
     private TextView operation;
+    private MediaPlayer mediaPlayer;
     private int answeredQuestions = 0;
 
     private Vibrator vibrator;
@@ -33,6 +38,8 @@ public class AlarmActivity extends AppCompatActivity {
 
         vibratePhone();
 
+        mediaPlayer = MediaPlayer.create(this, Uri.parse(getIntent().getStringExtra(uriNameInIntent)));
+        mediaPlayer.start();
         answerBox = findViewById(R.id.answerBox);
         op1 = findViewById(R.id.op1);
         op2 = findViewById(R.id.op2);
@@ -47,11 +54,14 @@ public class AlarmActivity extends AppCompatActivity {
                     if (typedAnswer == question.getAnswer())
                     {
                         answeredQuestions++;
-                        if (answeredQuestions == 3){
-                            finish();
+                        if (answeredQuestions == 3)
+                        {
+                            mediaPlayer.stop();
                             vibrator.cancel();
+                            finish();
                         }
-                        setNewQuestion();
+                        else
+                            setNewQuestion();
                         handled = true;
                     }
                 }
