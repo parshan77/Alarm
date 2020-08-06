@@ -32,7 +32,7 @@ public class MainFragment extends Fragment {
     private String TAG = "MainFragment";
 
     private RecyclerView recyclerView;
-    private RecyclerView.Adapter mAdapter;
+    public static RecyclerView.Adapter mAdapter;
     private RecyclerView.LayoutManager layoutManager;
     private Button button;
     DbHelper dbHelper;
@@ -74,30 +74,26 @@ public class MainFragment extends Fragment {
             public void onClick(View view) {
 
                 Log.i(TAG, "onClick: opening second page activity");
+                AlarmModel newAlarm = new AlarmModel(0, 0);
+                myDataset.add(newAlarm);
+                dbHelper.addAlarm(newAlarm);
+                mAdapter.notifyItemInserted(myDataset.size() - 1);
+                recyclerView.scrollToPosition(myDataset.size() - 1);
 
-                Intent intent = new Intent(getView().getContext(), SetAlarmActivity.class);
+              /*  Intent intent = new Intent(getView().getContext(), SetAlarmActivity.class);
 
                 Long tsLong = System.currentTimeMillis()/1000;
                 int alarmId = (int)(tsLong % 2000000000);
                 int pendingReqCode = alarmId;
-
+                intent.putExtra("Index", myDataset.size() - 1);
                 intent.putExtra(AlarmService.alarmIdNameInIntent, alarmId);
                 intent.putExtra(SetAlarmActivity.isEditedNameInIntent, false);
                 intent.putExtra(AlarmService.pendingIntentRequestCodeName, pendingReqCode);
 
-                getView().getContext().startActivity(intent);
-
+                getView().getContext().startActivity(intent);*/
                 // TODO: 8/6/20 debug
             }
         });
 
-        button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                myDataset.get(0).setHour(100);
-                mAdapter.notifyDataSetChanged();
-                dbHelper.updateAlarm(myDataset.get(0));
-            }
-        });
     }
 }

@@ -4,7 +4,17 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:padding="8dp"
     tools:context=".activities.SetAlarmActivity">
+
+    <Button
+        android:id="@+id/removeAlarmButton"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="Remove Alarm"
+        app:layout_constraintBottom_toTopOf="@+id/setAlarmButton"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
     <Button
         android:id="@+id/setAlarmButton"
@@ -23,18 +33,20 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <LinearLayout
+            android:id="@+id/timePick"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
+            android:layout_marginBottom="8dp"
+            android:background="?attr/selectableItemBackground"
             android:clickable="true"
-            android:background="?attr/selectableItemBackground">
+            android:orientation="vertical">
 
             <TextView
                 android:id="@+id/timeLabel"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Time"
-                android:textSize="24sp" />
+                android:textSize="18sp" />
 
             <TextView
                 android:id="@+id/timeText"
@@ -47,6 +59,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_marginBottom="8dp"
             android:orientation="vertical">
 
             <TextView
@@ -54,7 +67,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Week Days"
-                android:textSize="24sp" />
+                android:textSize="18sp" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -62,7 +75,7 @@
                 android:orientation="horizontal">
 
                 <CheckBox
-                    android:id="@+id/checkBox"
+                    android:id="@+id/satCheck"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -72,7 +85,7 @@
                     android:textAlignment="center" />
 
                 <CheckBox
-                    android:id="@+id/checkBox2"
+                    android:id="@+id/sunCheck"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -82,7 +95,7 @@
                     android:textAlignment="center" />
 
                 <CheckBox
-                    android:id="@+id/checkBox3"
+                    android:id="@+id/monCheck"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -92,7 +105,7 @@
                     android:textAlignment="center" />
 
                 <CheckBox
-                    android:id="@+id/checkBox4"
+                    android:id="@+id/tueCheck"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -102,7 +115,7 @@
                     android:textAlignment="center" />
 
                 <CheckBox
-                    android:id="@+id/checkBox5"
+                    android:id="@+id/wedCheck"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -112,7 +125,7 @@
                     android:textAlignment="center" />
 
                 <CheckBox
-                    android:id="@+id/checkBox6"
+                    android:id="@+id/thuCheck"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -122,7 +135,7 @@
                     android:textAlignment="center" />
 
                 <CheckBox
-                    android:id="@+id/checkBox7"
+                    android:id="@+id/friCheck"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"

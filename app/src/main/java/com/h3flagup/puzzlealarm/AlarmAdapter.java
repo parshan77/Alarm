@@ -14,8 +14,10 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.h3flagup.puzzlealarm.Service.AlarmService;
+import com.h3flagup.puzzlealarm.activities.MainActivity;
 import com.h3flagup.puzzlealarm.activities.SetAlarmActivity;
 import com.h3flagup.puzzlealarm.entities.AlarmModel;
+import com.h3flagup.puzzlealarm.fragments.MainFragment;
 
 import java.util.List;
 
@@ -39,19 +41,23 @@ public class AlarmAdapter extends RecyclerView.Adapter<AlarmAdapter.ViewHolder> 
         final AlarmModel alarmModel = alarmModels.get(position);
 
         TextView time = holder.alarmTime;
-        time.setText(alarmModel.getHour() + ":" + alarmModel.getMinute());
+        time.setText(alarmModel.getTime());
         holder.total.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(view.getContext(), SetAlarmActivity.class);
+                intent.putExtra("Index", position);
+
                 intent.putExtra(AlarmService.commandNameInIntent, AlarmService.editAlarmCommand);
                 view.getContext().startActivity(intent);
             }
         });
+        holder.alarmSwitch.setChecked(alarmModel.isActive());
         holder.alarmSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                //todo inja benevis listenero
+                alarmModel.setActive(b);
+                MainActivity.dbHelper.updateAlarm(alarmModel);
             }
         });
         for (int i = 0; i < 7; ++i)

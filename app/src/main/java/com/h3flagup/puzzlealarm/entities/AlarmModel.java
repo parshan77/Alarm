@@ -21,7 +21,7 @@ public class AlarmModel {
     long alarmId;
     private boolean isActive, isSnoozed;
     private Uri defaultUri;
-    private boolean[] days = {false, true, true, true, false, false, true};
+    private boolean[] days = {false, false, false, false, false, false, false};
 
     public AlarmModel(int hour, int minute) {
         this.hour = hour;
@@ -108,5 +108,10 @@ public class AlarmModel {
 
     public void setDays(boolean[] days) {
         this.days = days;
+    }
+
+    public String getTime()
+    {
+        return String.format("%02d:%02d", hour, minute);
     }
 }

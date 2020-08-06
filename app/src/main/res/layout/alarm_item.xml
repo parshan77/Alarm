@@ -3,15 +3,20 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:background="@drawable/border"
+    android:layout_marginBottom="8dp"
+    android:layout_marginTop="8dp"
+    >
 
     <LinearLayout
         android:id="@+id/total_alarm"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_marginTop="8dp"
         android:orientation="horizontal"
         android:padding="8dp"
+        android:background="?attr/selectableItemBackground"
+        android:clickable="true"
         app:layout_constraintTop_toTopOf="parent">
 
         <LinearLayout
@@ -26,6 +31,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="TextView"
+                android:textColor="@android:color/secondary_text_light"
                 android:textSize="24sp" />
 
             <LinearLayout
@@ -40,7 +46,8 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:text="SA"
-                    android:textAlignment="center" />
+                    android:textAlignment="center"
+                    android:textColor="@android:color/secondary_text_light" />
 
                 <TextView
                     android:id="@+id/sun"
@@ -48,7 +55,8 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:text="SU"
-                    android:textAlignment="center" />
+                    android:textAlignment="center"
+                    android:textColor="@android:color/secondary_text_light" />
 
                 <TextView
                     android:id="@+id/mon"
@@ -56,7 +64,8 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:text="MO"
-                    android:textAlignment="center" />
+                    android:textAlignment="center"
+                    android:textColor="@android:color/secondary_text_light" />
 
                 <TextView
                     android:id="@+id/tue"
@@ -64,7 +73,8 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:text="TU"
-                    android:textAlignment="center" />
+                    android:textAlignment="center"
+                    android:textColor="@android:color/secondary_text_light" />
 
                 <TextView
                     android:id="@+id/wed"
@@ -72,7 +82,8 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:text="WE"
-                    android:textAlignment="center" />
+                    android:textAlignment="center"
+                    android:textColor="@android:color/secondary_text_light" />
 
                 <TextView
                     android:id="@+id/thu"
@@ -80,7 +91,8 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:text="TH"
-                    android:textAlignment="center" />
+                    android:textAlignment="center"
+                    android:textColor="@android:color/secondary_text_light" />
 
                 <TextView
                     android:id="@+id/fri"
@@ -88,7 +100,8 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:text="FR"
-                    android:textAlignment="center" />
+                    android:textAlignment="center"
+                    android:textColor="@android:color/secondary_text_light" />
 
             </LinearLayout>
 
