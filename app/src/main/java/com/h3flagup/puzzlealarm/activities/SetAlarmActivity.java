@@ -11,10 +11,12 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.h3flagup.puzzlealarm.R;
+import com.h3flagup.puzzlealarm.Service.AlarmService;
 import com.h3flagup.puzzlealarm.fragments.TimePicker;
 
 public class SetAlarmActivity extends AppCompatActivity {
@@ -29,14 +31,47 @@ public class SetAlarmActivity extends AppCompatActivity {
     private TextView timeTextView;
     private TextView timeLabel;
     private String timePickerTag = "TimePicker";
+    private Button setAlarmButton;
 
-
+    public static final String isEditedNameInIntent = "isEdited";
+    public static final boolean IS_EDITED_DEFAULT_VALUE = false;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_set_alarm);
 
-        // time:
+
+        // TODO: 8/6/20 inaro bayad bedim be intent
+        final int alarmId = getIntent().getIntExtra(AlarmService.alarmIdNameInIntent, AlarmService.ALARMID_DEFAULT_VALUE);
+        final boolean isEdited = getIntent().getBooleanExtra(isEditedNameInIntent, IS_EDITED_DEFAULT_VALUE);
+
+        // setting up alarm
+        setAlarmButton = findViewById(R.id.setAlarmButton);
+        setAlarmButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (!isEdited) {
+                    Log.i(TAG, "setUpAlarm: getting information from alarmTimeTextView");
+                    String[] time = timeTextView.getText().toString().split(":");
+                    int hour = Integer.parseInt(time[0]), minute = Integer.parseInt(time[1]);
+
+
+                    Log.i(TAG, "setUpAlarm: starting alarmService");
+                    Intent alarmIntent = new Intent(getApplicationContext(), AlarmService.class);
+                    alarmIntent.putExtra(AlarmService.hourNameInIntent, hour);
+                    alarmIntent.putExtra(AlarmService.minuteNameInIntent, minute);
+                    alarmIntent.putExtra(AlarmService.alarmIdNameInIntent, alarmId);
+//                    alarmIntent.putExtra(AlarmService.)
+
+
+//                    MainActivity.getContext().startService(alarmIntent);
+                }else{
+                    Log.i(TAG, "onClick: editing alarm");
+                }
+            }
+        });
+
+        // viewing selected time:
         timeTextView = findViewById(R.id.timeText);
         timeLabel = findViewById(R.id.timeLabel);
         timeLabel.setOnClickListener(new View.OnClickListener() {
