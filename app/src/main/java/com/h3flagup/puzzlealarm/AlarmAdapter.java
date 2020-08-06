@@ -66,12 +66,15 @@ public class AlarmAdapter extends RecyclerView.Adapter<AlarmAdapter.ViewHolder> 
 
                 int alarmId = (int) alarmModel.getAlarmId();
                 int pendinReqConde = alarmId;
+                boolean[] days = alarmModel.getDays();
+
                 int hour = alarmModel.getHour(), minute = alarmModel.getMinute();
                 int questionsNum = 3;
                 Uri soundUri = alarmModel.getDefaultUri(); // TODO: 8/6/20
 
                 Intent alarmIntent = new Intent(context, AlarmService.class);
 
+                alarmIntent.putExtra(AlarmService.daysNameInIntent, days);
                 alarmIntent.putExtra(AlarmService.alarmIdNameInIntent, alarmId);
                 alarmIntent.putExtra(AlarmService.hourNameInIntent, hour);
                 alarmIntent.putExtra(AlarmService.minuteNameInIntent, minute);

@@ -24,6 +24,7 @@ public class AlarmService extends Service {
     private static final String TAG = "AlarmService";
 
     private int hour, minute, alarmId, lastAlarmsHour, lastAlarmsMinute;
+    private boolean[] days;
     private String songUri;
     private int questionsNum;
 
@@ -45,6 +46,7 @@ public class AlarmService extends Service {
     public static final String alarmSetNotificationChannelId = "SetNotification";
     public static final String alarmSetNotificationTitle = "Alarm Service";
 
+    public static final String daysNameInIntent = "daysOfTheWeek";
     public static final String hourNameInIntent = "hour";
     public static final String minuteNameInIntent = "minute";
     public static final String alarmIdNameInIntent = "alarmId";
@@ -75,6 +77,7 @@ public class AlarmService extends Service {
         questionsNum = intent.getIntExtra(AlarmReceiver.questionsNumIntentName, AlarmReceiver.questionsNumDefault);
         songUri = intent.getStringExtra(AlarmReceiver.uriNameInIntent);
         pendingIntentRequestCode = intent.getIntExtra(pendingIntentRequestCodeName, PENDING_INTENT_REQUEST_CODE_DEFAULT_VALUE);
+        days = intent.getBooleanArrayExtra(daysNameInIntent);
 
         switch (cmd) {
             case createAlarmCommand:
@@ -134,13 +137,6 @@ public class AlarmService extends Service {
     private void setupAlarm() {
         Log.i(TAG, "setupAlarm called");
 
-        Calendar calendar = Calendar.getInstance();
-        calendar.set(Calendar.HOUR_OF_DAY, hour);
-        calendar.set(Calendar.MINUTE, minute);
-        calendar.set(Calendar.SECOND, 0);
-        if (calendar.before(Calendar.getInstance()))
-            calendar.add(Calendar.DATE, 1);
-
         AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
 
         Intent intent = new Intent(this, AlarmReceiver.class);
@@ -148,10 +144,23 @@ public class AlarmService extends Service {
         intent.putExtra(AlarmReceiver.questionsNumIntentName, questionsNum);
 
         PendingIntent pendingIntent = PendingIntent.getBroadcast(this, pendingIntentRequestCode, intent, 0);
-        alarmManager.setExact(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pendingIntent);
+        for (int dayNum = 0; dayNum < 7; dayNum++) {
+            int day = (dayNum + 7) % 7;
+            if (days[dayNum]) {
+                Calendar calendar = Calendar.getInstance();
+
+                calendar.set(Calendar.HOUR_OF_DAY, hour);
+                calendar.set(Calendar.MINUTE, minute);
+                calendar.set(Calendar.SECOND, 0);
+                if (calendar.before(Calendar.getInstance()))
+                    calendar.add(Calendar.DATE, 1);
+
+                calendar.setWeekDate(calendar.YEAR, calendar.WEEK_OF_YEAR, day);
+
+                alarmManager.setExact(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pendingIntent);
+            }
+        }
     }
-
-
 
 
     private void showAlarmNotification() {
