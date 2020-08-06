@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CompoundButton;
 import android.widget.LinearLayout;
 import android.widget.Switch;
 import android.widget.TextView;
@@ -45,6 +46,12 @@ public class AlarmAdapter extends RecyclerView.Adapter<AlarmAdapter.ViewHolder> 
                 Intent intent = new Intent(view.getContext(), SetAlarmActivity.class);
                 intent.putExtra(AlarmService.commandNameInIntent, AlarmService.editAlarmCommand);
                 view.getContext().startActivity(intent);
+            }
+        });
+        holder.alarmSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                //todo inja benevis listenero
             }
         });
         for (int i = 0; i < 7; ++i)
