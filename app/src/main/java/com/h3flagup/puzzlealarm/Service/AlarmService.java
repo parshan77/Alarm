@@ -68,16 +68,16 @@ public class AlarmService extends Service {
 
         String cmd = intent.getStringExtra(commandNameInIntent);
 
+
+        hour = intent.getIntExtra(hourNameInIntent, HOUR_DEFAULT_VALUE);
+        minute = intent.getIntExtra(minuteNameInIntent, MINUTE_DEFAULT_VALUE);
+        alarmId = intent.getIntExtra(alarmIdNameInIntent, ALARMID_DEFAULT_VALUE);
+        questionsNum = intent.getIntExtra(AlarmReceiver.questionsNumIntentName, AlarmReceiver.questionsNumDefault);
+        songUri = intent.getStringExtra(AlarmReceiver.uriNameInIntent);
+        pendingIntentRequestCode = intent.getIntExtra(pendingIntentRequestCodeName, PENDING_INTENT_REQUEST_CODE_DEFAULT_VALUE);
+
         switch (cmd) {
             case createAlarmCommand:
-
-                hour = intent.getIntExtra(hourNameInIntent, HOUR_DEFAULT_VALUE);
-                minute = intent.getIntExtra(minuteNameInIntent, MINUTE_DEFAULT_VALUE);
-                alarmId = intent.getIntExtra(alarmIdNameInIntent, ALARMID_DEFAULT_VALUE);
-                questionsNum = intent.getIntExtra(AlarmReceiver.questionsNumIntentName, AlarmReceiver.questionsNumDefault);
-                songUri = intent.getStringExtra(AlarmReceiver.uriNameInIntent);
-                pendingIntentRequestCode = intent.getIntExtra(pendingIntentRequestCodeName, PENDING_INTENT_REQUEST_CODE_DEFAULT_VALUE);
-
                 new Thread(new Runnable() {
                     @Override
                     public void run() {
@@ -89,25 +89,22 @@ public class AlarmService extends Service {
                 break;
 
             case editAlarmCommand:
-                alarmId = intent.getIntExtra(alarmIdNameInIntent, ALARMID_DEFAULT_VALUE);
-                hour = intent.getIntExtra(hourNameInIntent, HOUR_DEFAULT_VALUE);
-                minute = intent.getIntExtra(minuteNameInIntent, MINUTE_DEFAULT_VALUE);
-                pendingIntentRequestCode = intent.getIntExtra(pendingIntentRequestCodeName, PENDING_INTENT_REQUEST_CODE_DEFAULT_VALUE);
-                songUri = intent.getStringExtra(AlarmReceiver.uriNameInIntent);
-                questionsNum = intent.getIntExtra(AlarmReceiver.questionsNumIntentName, AlarmReceiver.questionsNumDefault);
-
-
-                editAlarm();
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        editAlarm();
+                    }
+                }).start();
 
                 break;
 
             case deleteAlarmCommand:
-                alarmId = intent.getIntExtra(alarmIdNameInIntent, ALARMID_DEFAULT_VALUE);
-                hour = intent.getIntExtra(hourNameInIntent, HOUR_DEFAULT_VALUE);
-                minute = intent.getIntExtra(minuteNameInIntent, MINUTE_DEFAULT_VALUE);
-                pendingIntentRequestCode = intent.getIntExtra(pendingIntentRequestCodeName, PENDING_INTENT_REQUEST_CODE_DEFAULT_VALUE);
-
-                cancelAlarm();
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        cancelAlarm();
+                    }
+                }).start();
                 break;
 
             default:

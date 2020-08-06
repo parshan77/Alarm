@@ -64,31 +64,28 @@ public class AlarmAdapter extends RecyclerView.Adapter<AlarmAdapter.ViewHolder> 
                 alarmModel.setActive(b);
                 MainActivity.dbHelper.updateAlarm(alarmModel);
 
+                int alarmId = (int) alarmModel.getAlarmId();
+                int pendinReqConde = alarmId;
+                int hour = alarmModel.getHour(), minute = alarmModel.getMinute();
+                int questionsNum = 3;
+                Uri soundUri = alarmModel.getDefaultUri(); // TODO: 8/6/20
+
+                Intent alarmIntent = new Intent(context, AlarmService.class);
+
+                alarmIntent.putExtra(AlarmService.alarmIdNameInIntent, alarmId);
+                alarmIntent.putExtra(AlarmService.hourNameInIntent, hour);
+                alarmIntent.putExtra(AlarmService.minuteNameInIntent, minute);
+                alarmIntent.putExtra(AlarmReceiver.questionsNumIntentName, questionsNum);
+                alarmIntent.putExtra(AlarmReceiver.uriNameInIntent, soundUri);
+
+                alarmIntent.putExtra(AlarmService.pendingIntentRequestCodeName, pendinReqConde);
+
                 if (b) {
-
-                    int alarmId = (int) alarmModel.getAlarmId();
-                    int pendinReqConde = alarmId;
-                    int hour = alarmModel.getHour(), minute = alarmModel.getMinute();
-                    int questionsNum = 3;
-                    Uri soundUri = alarmModel.getDefaultUri(); // TODO: 8/6/20
-
-
-                    Intent alarmIntent = new Intent(context, AlarmService.class);
-
-                    alarmIntent.putExtra(AlarmService.alarmIdNameInIntent, alarmId);
-                    alarmIntent.putExtra(AlarmService.hourNameInIntent, hour);
-                    alarmIntent.putExtra(AlarmService.minuteNameInIntent, minute);
-                    alarmIntent.putExtra(AlarmReceiver.questionsNumIntentName, questionsNum);
-                    alarmIntent.putExtra(AlarmReceiver.uriNameInIntent, soundUri);
-
-                    alarmIntent.putExtra(AlarmService.pendingIntentRequestCodeName, pendinReqConde);
                     alarmIntent.putExtra(AlarmService.commandNameInIntent, AlarmService.createAlarmCommand);
-
-                    context.startService(alarmIntent);
                 } else {
-
+                    alarmIntent.putExtra(AlarmService.commandNameInIntent, AlarmService.deleteAlarmCommand);
                 }
-
+                context.startService(alarmIntent);
             }
         });
         for (int i = 0; i < 7; ++i)
