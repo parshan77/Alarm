@@ -2,7 +2,10 @@ package com.h3flagup.puzzlealarm.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
 import android.os.Bundle;
+import android.os.Vibrator;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
@@ -20,10 +23,16 @@ public class AlarmActivity extends AppCompatActivity {
     private TextView op2;
     private TextView operation;
     private int answeredQuestions = 0;
+
+    private Vibrator vibrator;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_alarm);
+
+        vibratePhone();
+
         answerBox = findViewById(R.id.answerBox);
         op1 = findViewById(R.id.op1);
         op2 = findViewById(R.id.op2);
@@ -38,8 +47,10 @@ public class AlarmActivity extends AppCompatActivity {
                     if (typedAnswer == question.getAnswer())
                     {
                         answeredQuestions++;
-                        if (answeredQuestions == 3)
+                        if (answeredQuestions == 3){
                             finish();
+                            vibrator.cancel();
+                        }
                         setNewQuestion();
                         handled = true;
                     }
@@ -66,5 +77,11 @@ public class AlarmActivity extends AppCompatActivity {
                 operation.setText("-");
                 break;
         }
+    }
+
+    private void vibratePhone() {
+        long[] vibrationPattern = {0, 1000, 1000};
+        vibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
+        vibrator.vibrate(vibrationPattern, 0);
     }
 }

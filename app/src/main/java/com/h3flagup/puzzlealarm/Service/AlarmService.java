@@ -8,6 +8,7 @@ import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Build;
 import android.os.IBinder;
 import android.util.Log;
@@ -146,6 +147,12 @@ public class AlarmService extends Service {
         PendingIntent pendingIntent = PendingIntent.getBroadcast(this, pendingIntentRequestCode, intent, 0);
 
         Calendar calendar = Calendar.getInstance();
+
+        int today = calendar.get(Calendar.DAY_OF_WEEK);
+        int convertedDay = today % 7;
+        if (!days[convertedDay]){
+            return;
+        }
 
         calendar.set(Calendar.HOUR_OF_DAY, hour);
         calendar.set(Calendar.MINUTE, minute);

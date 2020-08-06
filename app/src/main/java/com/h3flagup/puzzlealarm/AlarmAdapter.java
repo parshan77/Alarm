@@ -79,7 +79,7 @@ public class AlarmAdapter extends RecyclerView.Adapter<AlarmAdapter.ViewHolder> 
                 alarmIntent.putExtra(AlarmService.hourNameInIntent, hour);
                 alarmIntent.putExtra(AlarmService.minuteNameInIntent, minute);
                 alarmIntent.putExtra(AlarmReceiver.questionsNumIntentName, questionsNum);
-                alarmIntent.putExtra(AlarmReceiver.uriNameInIntent, soundUri);
+                alarmIntent.putExtra(AlarmReceiver.uriNameInIntent, soundUri.toString());
 
                 alarmIntent.putExtra(AlarmService.pendingIntentRequestCodeName, pendinReqConde);
 

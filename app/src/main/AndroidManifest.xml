@@ -3,7 +3,8 @@
     package="com.h3flagup.puzzlealarm">
 
     <uses-permission android:name="com.android.alarm.permission.SET_ALARM"/>
-
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="android.permission.VIBRATE" />
 
 
     <application
