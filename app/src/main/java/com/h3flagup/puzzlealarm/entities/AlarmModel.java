@@ -1,25 +1,35 @@
 package com.h3flagup.puzzlealarm.entities;
 
+import android.media.RingtoneManager;
+import android.net.Uri;
+
+import java.net.URI;
 import java.util.Arrays;
 
 public class AlarmModel {
-    private int hour, minute, day, month;
+    private int hour;
+    private int minute;
+    public int getRequestCode() {
+        return requestCode;
+    }
+
+    public void setRequestCode(int requestCode) {
+        this.requestCode = requestCode;
+    }
+
+    private int requestCode;
+    long alarmId;
     private boolean isActive, isSnoozed;
+    private Uri defaultUri;
     private boolean[] days = {false, true, true, true, false, false, true};
 
     public AlarmModel(int hour, int minute) {
         this.hour = hour;
         this.minute = minute;
-    }
-
-    public AlarmModel(int hour, int minute, int day, int month, boolean isActive, boolean isSnoozed, boolean[] days) {
-        this.hour = hour;
-        this.minute = minute;
-        this.day = day;
-        this.month = month;
-        this.isActive = isActive;
-        this.isSnoozed = isSnoozed;
-        this.days = days;
+        isActive = false;
+        isSnoozed = false;
+        requestCode = 0;
+        defaultUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_ALARM);
     }
 
     @Override
@@ -27,8 +37,6 @@ public class AlarmModel {
         return "AlarmModel{" +
                 "hour=" + hour +
                 ", minute=" + minute +
-                ", day=" + day +
-                ", month=" + month +
                 ", isActive=" + isActive +
                 ", isSnoozed=" + isSnoozed +
                 ", days=" + Arrays.toString(days) +
@@ -51,20 +59,15 @@ public class AlarmModel {
         this.minute = minute;
     }
 
-    public int getDay() {
-        return day;
-    }
-
-    public void setDay(int day) {
-        this.day = day;
-    }
-
-    public int getMonth() {
-        return month;
-    }
-
-    public void setMonth(int month) {
-        this.month = month;
+    public AlarmModel(int hour, int minute, int requestCode, long alarmId, boolean isActive, boolean isSnoozed, Uri defaultUri, boolean[] days) {
+        this.hour = hour;
+        this.minute = minute;
+        this.requestCode = requestCode;
+        this.alarmId = alarmId;
+        this.isActive = isActive;
+        this.isSnoozed = isSnoozed;
+        this.defaultUri = defaultUri;
+        this.days = days;
     }
 
     public boolean isActive() {
@@ -85,6 +88,22 @@ public class AlarmModel {
 
     public boolean[] getDays() {
         return days;
+    }
+
+    public void setDefaultUri(Uri defaultUri) {
+        this.defaultUri = defaultUri;
+    }
+
+    public void setAlarmId(long alarmId) {
+        this.alarmId = alarmId;
+    }
+
+    public long getAlarmId() {
+        return alarmId;
+    }
+
+    public Uri getDefaultUri() {
+        return defaultUri;
     }
 
     public void setDays(boolean[] days) {
