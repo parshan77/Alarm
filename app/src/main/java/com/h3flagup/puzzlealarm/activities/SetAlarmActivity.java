@@ -16,6 +16,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.h3flagup.puzzlealarm.R;
+import com.h3flagup.puzzlealarm.Service.AlarmReciever;
 import com.h3flagup.puzzlealarm.Service.AlarmService;
 import com.h3flagup.puzzlealarm.fragments.TimePicker;
 
@@ -44,29 +45,39 @@ public class SetAlarmActivity extends AppCompatActivity {
         // TODO: 8/6/20 inaro bayad bedim be intent
         final int alarmId = getIntent().getIntExtra(AlarmService.alarmIdNameInIntent, AlarmService.ALARMID_DEFAULT_VALUE);
         final boolean isEdited = getIntent().getBooleanExtra(isEditedNameInIntent, IS_EDITED_DEFAULT_VALUE);
+        final int pendingIntentRequestCode = getIntent().getIntExtra(AlarmService.pendingIntentRequestCodeName, AlarmService.PENDING_INTENT_REQUEST_CODE_DEFAULT_VALUE);
+        final int questionsNum = 3;     // TODO: 8/6/20
+        final String soundUri = "sa";      // TODO: 8/6/20
 
-        // setting up alarm
+
         setAlarmButton = findViewById(R.id.setAlarmButton);
         setAlarmButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                String[] time = timeTextView.getText().toString().split(":");
+                int hour = Integer.parseInt(time[0]), minute = Integer.parseInt(time[1]);
+
+
+                Intent alarmIntent = new Intent(getApplicationContext(), AlarmService.class);
+
+                alarmIntent.putExtra(AlarmService.hourNameInIntent, hour);
+                alarmIntent.putExtra(AlarmService.minuteNameInIntent, minute);
+                alarmIntent.putExtra(AlarmService.alarmIdNameInIntent, alarmId);
+                alarmIntent.putExtra(AlarmReciever.questionsNumIntentName, questionsNum);
+                alarmIntent.putExtra(AlarmReciever.uriNameInIntent, soundUri);
+
                 if (!isEdited) {
                     Log.i(TAG, "setUpAlarm: getting information from alarmTimeTextView");
-                    String[] time = timeTextView.getText().toString().split(":");
-                    int hour = Integer.parseInt(time[0]), minute = Integer.parseInt(time[1]);
 
+                    alarmIntent.putExtra(AlarmService.commandNameInIntent, AlarmService.createAlarmCommand);
 
-                    Log.i(TAG, "setUpAlarm: starting alarmService");
-                    Intent alarmIntent = new Intent(getApplicationContext(), AlarmService.class);
-                    alarmIntent.putExtra(AlarmService.hourNameInIntent, hour);
-                    alarmIntent.putExtra(AlarmService.minuteNameInIntent, minute);
-                    alarmIntent.putExtra(AlarmService.alarmIdNameInIntent, alarmId);
-//                    alarmIntent.putExtra(AlarmService.)
-
-
-//                    MainActivity.getContext().startService(alarmIntent);
+                    getApplicationContext().startService(alarmIntent);
                 }else{
                     Log.i(TAG, "onClick: editing alarm");
+
+                    alarmIntent.putExtra(AlarmService.commandNameInIntent, AlarmService.editAlarmCommand);
+
+                    getApplicationContext().startService(alarmIntent);
                 }
             }
         });

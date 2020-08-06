@@ -48,8 +48,8 @@ public class AlarmService extends Service {
     public static final String hourNameInIntent = "hour";
     public static final String minuteNameInIntent = "minute";
     public static final String alarmIdNameInIntent = "alarmId";
-    public static final String lastAlarmsHourNameInIntent = "lastHour";
-    public static final String lastAlarmsMinuteNameInIntent = "lastMinute";
+//    public static final String lastAlarmsHourNameInIntent = "lastHour";
+//    public static final String lastAlarmsMinuteNameInIntent = "lastMinute";
     public static final String pendingIntentRequestCodeName = "PendingIntentRequestCode";
 
 
@@ -94,9 +94,11 @@ public class AlarmService extends Service {
                 alarmId = intent.getIntExtra(alarmIdNameInIntent, ALARMID_DEFAULT_VALUE);
                 hour = intent.getIntExtra(hourNameInIntent, HOUR_DEFAULT_VALUE);
                 minute = intent.getIntExtra(minuteNameInIntent, MINUTE_DEFAULT_VALUE);
-                lastAlarmsHour = intent.getIntExtra(lastAlarmsHourNameInIntent, HOUR_DEFAULT_VALUE);
-                lastAlarmsMinute = intent.getIntExtra(lastAlarmsMinuteNameInIntent, MINUTE_DEFAULT_VALUE);
                 pendingIntentRequestCode = intent.getIntExtra(pendingIntentRequestCodeName, PENDING_INTENT_REQUEST_CODE_DEFAULT_VALUE);
+                songUri = intent.getStringExtra(AlarmReciever.uriNameInIntent);
+                questionsNum = intent.getIntExtra(AlarmReciever.questionsNumIntentName, AlarmReciever.questionsNumDefault);
+
+
                 editAlarm();
 
                 break;
