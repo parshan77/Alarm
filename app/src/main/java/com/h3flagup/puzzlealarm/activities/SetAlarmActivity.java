@@ -43,6 +43,7 @@ public class SetAlarmActivity extends AppCompatActivity {
 
     public static final String isEditedNameInIntent = "isEdited";
     public static final boolean IS_EDITED_DEFAULT_VALUE = false;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -122,7 +123,7 @@ public class SetAlarmActivity extends AppCompatActivity {
                     alarmIntent.putExtra(AlarmService.commandNameInIntent, AlarmService.createAlarmCommand);
 
                     getApplicationContext().startService(alarmIntent);
-                }else{
+                } else {
                     Log.i(TAG, "onClick: editing alarm");
 
                     alarmIntent.putExtra(AlarmService.commandNameInIntent, AlarmService.editAlarmCommand);

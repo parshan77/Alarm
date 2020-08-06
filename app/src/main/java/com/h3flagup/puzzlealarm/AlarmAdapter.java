@@ -2,6 +2,7 @@ package com.h3flagup.puzzlealarm;
 
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,21 +14,25 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.h3flagup.puzzlealarm.Service.AlarmReceiver;
 import com.h3flagup.puzzlealarm.Service.AlarmService;
 import com.h3flagup.puzzlealarm.activities.MainActivity;
 import com.h3flagup.puzzlealarm.activities.SetAlarmActivity;
 import com.h3flagup.puzzlealarm.entities.AlarmModel;
 import com.h3flagup.puzzlealarm.fragments.MainFragment;
 
+import java.net.URI;
 import java.util.List;
 
 import static android.graphics.Color.rgb;
 
 public class AlarmAdapter extends RecyclerView.Adapter<AlarmAdapter.ViewHolder> {
+    private Context context;
+
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        Context context = parent.getContext();
+        context = parent.getContext();
         LayoutInflater inflater = LayoutInflater.from(context);
 
         View alarmView = inflater.inflate(R.layout.alarm_item, parent, false);
@@ -58,6 +63,27 @@ public class AlarmAdapter extends RecyclerView.Adapter<AlarmAdapter.ViewHolder> 
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
                 alarmModel.setActive(b);
                 MainActivity.dbHelper.updateAlarm(alarmModel);
+
+                int alarmId = (int)alarmModel.getAlarmId();
+                int pendinReqConde = alarmId;
+                int hour = alarmModel.getHour(), minute = alarmModel.getMinute();
+                int questionsNum = 3;
+                Uri soundUri = alarmModel.getDefaultUri(); // TODO: 8/6/20
+
+
+                Intent alarmIntent = new Intent(context, AlarmService.class);
+
+                alarmIntent.putExtra(AlarmService.alarmIdNameInIntent, alarmId);
+                alarmIntent.putExtra(AlarmService.hourNameInIntent, hour);
+                alarmIntent.putExtra(AlarmService.minuteNameInIntent, minute);
+                alarmIntent.putExtra(AlarmReceiver.questionsNumIntentName, questionsNum);
+                alarmIntent.putExtra(AlarmReceiver.uriNameInIntent, soundUri);
+
+                alarmIntent.putExtra(AlarmService.pendingIntentRequestCodeName, pendinReqConde);
+                alarmIntent.putExtra(AlarmService.commandNameInIntent, AlarmService.createAlarmCommand);
+
+                context.startService(alarmIntent);
+
             }
         });
         for (int i = 0; i < 7; ++i)

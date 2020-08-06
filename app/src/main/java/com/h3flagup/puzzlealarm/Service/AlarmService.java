@@ -48,8 +48,6 @@ public class AlarmService extends Service {
     public static final String hourNameInIntent = "hour";
     public static final String minuteNameInIntent = "minute";
     public static final String alarmIdNameInIntent = "alarmId";
-//    public static final String lastAlarmsHourNameInIntent = "lastHour";
-//    public static final String lastAlarmsMinuteNameInIntent = "lastMinute";
     public static final String pendingIntentRequestCodeName = "PendingIntentRequestCode";
 
 
