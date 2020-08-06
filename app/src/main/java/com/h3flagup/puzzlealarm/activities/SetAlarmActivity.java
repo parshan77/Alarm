@@ -19,6 +19,8 @@ import com.h3flagup.puzzlealarm.fragments.TimePicker;
 
 public class SetAlarmActivity extends AppCompatActivity {
 
+    private String TAG = "SetAlarmActivity";
+
     // Sound variables
     private LinearLayout sound_picker;
     private TextView alarm_sound;
@@ -27,6 +29,7 @@ public class SetAlarmActivity extends AppCompatActivity {
     private TextView timeTextView;
     private TextView timeLabel;
     private String timePickerTag = "TimePicker";
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,7 +42,11 @@ public class SetAlarmActivity extends AppCompatActivity {
         timeLabel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                Log.i(TAG, "onClick: opening time picker");
+
                 DialogFragment timePickerFragment = new TimePicker(getApplicationContext().getMainLooper(), timeTextView);
+                timePickerFragment.show(getSupportFragmentManager(), timePickerTag);
+                // TODO: 8/6/20 debug!
             }
         });
 

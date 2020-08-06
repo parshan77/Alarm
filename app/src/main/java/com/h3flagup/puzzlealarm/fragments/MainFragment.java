@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 
 import com.h3flagup.puzzlealarm.AlarmAdapter;
 import com.h3flagup.puzzlealarm.R;
@@ -29,6 +30,9 @@ public class MainFragment extends Fragment {
             new AlarmModel(21, 41),
             new AlarmModel(4, 55));
 
+    private Button newAlarmButton;
+
+
     public static MainFragment newInstance() {
         return new MainFragment();
     }
@@ -43,6 +47,7 @@ public class MainFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
         recyclerView = (RecyclerView) getView().findViewById(R.id.alarm_recycler);
         recyclerView.setHasFixedSize(true);
         layoutManager = new LinearLayoutManager(getContext());
