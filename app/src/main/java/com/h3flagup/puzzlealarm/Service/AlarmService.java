@@ -23,60 +23,115 @@ import java.util.Calendar;
 public class AlarmService extends Service {
     private static final String TAG = "AlarmService";
 
-    private int hour, minute, alarmId;
+    private int hour, minute, alarmId, lastAlarmsHour, lastAlarmsMinute;
     private String songUri;
     private int questionsNum;
 
+    private int pendingIntentRequestCode;
+    private int notificationId = 0;         //unique notification ids used for notifying the alarm is set
+
     private AlarmManager alarmManager;
     private PendingIntent pendingIntent;
-    private int pendingIntentRequestCode = 0;
-    private int notificationId = 0;         //unique notification ids used for notifying the alarm is set
 
 
     // constants:
+    public static final String commandNameInIntent = "Command";
+    public static final String createAlarmCommand = "CreateAlarm";
+    public static final String editAlarmCommand = "EditAlarm";
+    public static final String deleteAlarmCommand = "DeleteAlarm";
 
-    // TODO: 4/29/20 move these to res package
-    private static final int SNOOZING_INTERVAL_IN_MINUTES = 10;
-    private static final String alarmSetNotificationChannelId = "SetNotification";
-    private static final String alarmSetNotificationTitle = "Alarm Service";
+
+    public static final int SNOOZING_INTERVAL_IN_MINUTES = 10;
+    public static final String alarmSetNotificationChannelId = "SetNotification";
+    public static final String alarmSetNotificationTitle = "Alarm Service";
+
+    public static final String hourNameInIntent = "hour";
+    public static final String minuteNameInIntent = "minute";
+    public static final String alarmIdNameInIntent = "alarmId";
+    public static final String lastAlarmsHourNameInIntent = "lastHour";
+    public static final String lastAlarmsMinuteNameInIntent = "lastMinute";
+    public static final String pendingIntentRequestCodeName = "PendingIntentRequestCode";
 
 
-    private static final String hourNameInIntent = "hour";
-    private static final String minuteNameInIntent = "minute";
-    private static final String alarmIdNameInIntent = "alarmId";
-
-    private static int HOUR_DEFAULT_VALUE = 8;
-    private static int MINUTE_DEFAULT_VALUE = 30;
-    private static int ALARMID_DEFAULT_VALUE = 0;
+    public static int PENDING_INTENT_REQUEST_CODE_DEFAULT_VALUE = 0;
+    public static int HOUR_DEFAULT_VALUE = 8;
+    public static int MINUTE_DEFAULT_VALUE = 30;
+    public static int ALARMID_DEFAULT_VALUE = 0;
 
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         Log.i(TAG, "onStartCommand: service started, fetching data from intent");
 
-        if (intent == null)
-        {
+        if (intent == null) {
             Log.w(TAG, "onStartCommand: Null Intent!");
             return super.onStartCommand(intent, flags, startId);
         }
 
-        hour = intent.getIntExtra(hourNameInIntent,HOUR_DEFAULT_VALUE);
-        minute = intent.getIntExtra(minuteNameInIntent, MINUTE_DEFAULT_VALUE);
-        alarmId = intent.getIntExtra(alarmIdNameInIntent, ALARMID_DEFAULT_VALUE);
-        questionsNum = intent.getIntExtra(AlarmReciever.questionsNumIntentName, AlarmReciever.questionsNumDefault);
-        songUri = intent.getStringExtra(AlarmReciever.uriNameInIntent);
+        String cmd = intent.getStringExtra(commandNameInIntent);
 
+        switch (cmd) {
+            case createAlarmCommand:
 
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                createNotificationChannel();
-                setupAlarm();
-                showAlarmNotification();
-            }
-        }).start();
+                hour = intent.getIntExtra(hourNameInIntent, HOUR_DEFAULT_VALUE);
+                minute = intent.getIntExtra(minuteNameInIntent, MINUTE_DEFAULT_VALUE);
+                alarmId = intent.getIntExtra(alarmIdNameInIntent, ALARMID_DEFAULT_VALUE);
+                questionsNum = intent.getIntExtra(AlarmReciever.questionsNumIntentName, AlarmReciever.questionsNumDefault);
+                songUri = intent.getStringExtra(AlarmReciever.uriNameInIntent);
+                pendingIntentRequestCode = intent.getIntExtra(pendingIntentRequestCodeName, PENDING_INTENT_REQUEST_CODE_DEFAULT_VALUE);
+
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        createNotificationChannel();
+                        setupAlarm();
+                        showAlarmNotification();
+                    }
+                }).start();
+                break;
+
+            case editAlarmCommand:
+                alarmId = intent.getIntExtra(alarmIdNameInIntent, ALARMID_DEFAULT_VALUE);
+                hour = intent.getIntExtra(hourNameInIntent, HOUR_DEFAULT_VALUE);
+                minute = intent.getIntExtra(minuteNameInIntent, MINUTE_DEFAULT_VALUE);
+                lastAlarmsHour = intent.getIntExtra(lastAlarmsHourNameInIntent, HOUR_DEFAULT_VALUE);
+                lastAlarmsMinute = intent.getIntExtra(lastAlarmsMinuteNameInIntent, MINUTE_DEFAULT_VALUE);
+                pendingIntentRequestCode = intent.getIntExtra(pendingIntentRequestCodeName, PENDING_INTENT_REQUEST_CODE_DEFAULT_VALUE);
+                editAlarm();
+
+                break;
+
+            case deleteAlarmCommand:
+                alarmId = intent.getIntExtra(alarmIdNameInIntent, ALARMID_DEFAULT_VALUE);
+                hour = intent.getIntExtra(hourNameInIntent, HOUR_DEFAULT_VALUE);
+                minute = intent.getIntExtra(minuteNameInIntent, MINUTE_DEFAULT_VALUE);
+                pendingIntentRequestCode = intent.getIntExtra(pendingIntentRequestCodeName, PENDING_INTENT_REQUEST_CODE_DEFAULT_VALUE);
+
+                cancelAlarm();
+                break;
+
+            default:
+                Log.i(TAG, "onStartCommand: unsupported command!");
+                break;
+        }
 
         return super.onStartCommand(intent, flags, startId);
+    }
+
+    private void editAlarm() {
+        cancelAlarm();
+        setupAlarm();
+    }
+
+    private void cancelAlarm() {
+        AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+
+        Intent intent = new Intent(this, AlarmReciever.class);
+        intent.putExtra(AlarmReciever.uriNameInIntent, songUri);
+        intent.putExtra(AlarmReciever.questionsNumIntentName, questionsNum);
+
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(this, pendingIntentRequestCode, intent, 0);
+        alarmManager.cancel(pendingIntent);
     }
 
     private void setupAlarm() {
@@ -86,7 +141,7 @@ public class AlarmService extends Service {
         calendar.set(Calendar.HOUR_OF_DAY, hour);
         calendar.set(Calendar.MINUTE, minute);
         calendar.set(Calendar.SECOND, 0);
-        if(calendar.before(Calendar.getInstance()))
+        if (calendar.before(Calendar.getInstance()))
             calendar.add(Calendar.DATE, 1);
 
         AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
@@ -95,10 +150,11 @@ public class AlarmService extends Service {
         intent.putExtra(AlarmReciever.uriNameInIntent, songUri);
         intent.putExtra(AlarmReciever.questionsNumIntentName, questionsNum);
 
-
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(this, 1, intent, 0);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(this, pendingIntentRequestCode, intent, 0);
         alarmManager.setExact(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pendingIntent);
     }
+
+
 
 
     private void showAlarmNotification() {
@@ -139,8 +195,6 @@ public class AlarmService extends Service {
             notificationManager.createNotificationChannel(channel);
         }
     }
-
-
 
 
     @Nullable
